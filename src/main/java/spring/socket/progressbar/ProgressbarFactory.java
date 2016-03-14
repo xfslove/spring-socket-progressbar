@@ -1,6 +1,6 @@
 package spring.socket.progressbar;
 
-import spring.socket.progressbar.model.ProgressbarModel;
+import spring.socket.progressbar.model.Progressbar;
 
 /**
  * Created by hanwen on 16/3/11.
@@ -14,7 +14,7 @@ public interface ProgressbarFactory {
    * @param total  progressbar总数
    * @return
    */
-  ProgressbarModel get(ProgressbarBroker broker, int total);
+  Progressbar get(ProgressbarBroker broker, int total);
 
   /**
    * 从cache中evict一个progressbar实例

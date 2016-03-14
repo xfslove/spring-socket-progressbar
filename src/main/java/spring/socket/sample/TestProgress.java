@@ -3,10 +3,10 @@ package spring.socket.sample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import spring.socket.progressbar.ProgressbarBroker;
-import spring.socket.progressbar.model.ProgressbarModel;
 import spring.socket.progressbar.DefaultProgressbarBroker;
+import spring.socket.progressbar.ProgressbarBroker;
 import spring.socket.progressbar.ProgressbarFactory;
+import spring.socket.progressbar.model.Progressbar;
 
 /**
  * Created by hanwen on 16/3/12.
@@ -22,7 +22,7 @@ public class TestProgress {
 
     ProgressbarBroker identify = new DefaultProgressbarBroker("TEST");
 
-    ProgressbarModel bar = progressbarFactory.get(identify, 100);
+    Progressbar bar = progressbarFactory.get(identify, 100);
 
     bar.init();
 
