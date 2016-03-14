@@ -16,7 +16,7 @@ public class ProgressbarModel implements Progressbar {
 
   private final int total;
 
-  private int current = 0;
+  private volatile int current = 0;
 
   public ProgressbarModel(
       ProgressbarFactory progressbarFactory,
@@ -31,24 +31,24 @@ public class ProgressbarModel implements Progressbar {
   }
 
   @Override
-  public void init() {
+  public synchronized void init() {
     messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
   }
 
   @Override
-  public void increase() {
+  public synchronized void increase() {
     current++;
     messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
   }
 
   @Override
-  public void increase(int increase) {
+  public synchronized void increase(int increase) {
     current += increase;
     messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
   }
 
   @Override
-  public void finish() {
+  public synchronized void finish() {
     messageTemplate.convertAndSend(getFinishDestination(), "FINISH");
     progressbarFactory.evict(broker, total);
   }

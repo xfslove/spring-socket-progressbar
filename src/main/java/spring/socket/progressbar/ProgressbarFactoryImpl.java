@@ -1,7 +1,6 @@
 package spring.socket.progressbar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.stereotype.Component;
 import spring.socket.progressbar.model.Progressbar;
@@ -19,22 +18,21 @@ public class ProgressbarFactoryImpl implements ProgressbarFactory {
 
   private MessageSendingOperations messageTemplate;
 
-  private final ConcurrentMap<SimpleKey, Progressbar> progressbarCache = new ConcurrentHashMap<SimpleKey, Progressbar>(256);
+  private final ConcurrentMap<String, Progressbar> progressbarCache = new ConcurrentHashMap<String, Progressbar>(256);
 
   @Override
   public Progressbar get(ProgressbarBroker broker, int total) {
-    SimpleKey simpleKey = new SimpleKey(broker);
-    if (progressbarCache.containsKey(simpleKey)) {
+    if (progressbarCache.containsKey(broker.getBrokerDestination())) {
       return progressbarCache.get(broker);
     }
     Progressbar progressbar = new ProgressbarModel(this, messageTemplate, broker, total);
-    progressbarCache.put(simpleKey, progressbar);
+    progressbarCache.put(broker.getBrokerDestination(), progressbar);
     return progressbar;
   }
 
   @Override
   public void evict(ProgressbarBroker broker, int total) {
-    progressbarCache.remove(new SimpleKey(broker));
+    progressbarCache.remove(broker.getBrokerDestination());
   }
 
   @Autowired
