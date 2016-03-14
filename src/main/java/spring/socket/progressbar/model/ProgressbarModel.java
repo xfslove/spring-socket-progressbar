@@ -3,6 +3,9 @@ package spring.socket.progressbar.model;
 import org.springframework.messaging.core.MessageSendingOperations;
 import spring.socket.progressbar.ProgressbarFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntUnaryOperator;
+
 /**
  * Created by hanwen on 16/3/11.
  */
@@ -16,7 +19,7 @@ public class ProgressbarModel implements Progressbar {
 
   private final int total;
 
-  private volatile int current = 0;
+  private AtomicInteger current = new AtomicInteger(0);
 
   public ProgressbarModel(
       ProgressbarFactory progressbarFactory,
@@ -31,26 +34,31 @@ public class ProgressbarModel implements Progressbar {
   }
 
   @Override
-  public synchronized void init() {
-    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
+  public void init() {
+    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current.get()));
   }
 
   @Override
-  public synchronized void increase() {
-    current++;
-    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
+  public void increase() {
+    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current.incrementAndGet()));
   }
 
   @Override
-  public synchronized void increase(int increase) {
-    current += increase;
-    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current));
+  public void increase(final int increase) {
+    messageTemplate.convertAndSend(getProgressDestination(), new ProgressbarMessage(total, current.updateAndGet(new IntUnaryOperator() {
+      @Override
+      public int applyAsInt(int operand) {
+        return current.get() + increase;
+      }
+    })));
   }
 
   @Override
-  public synchronized void finish() {
-    messageTemplate.convertAndSend(getFinishDestination(), "FINISH");
-    progressbarFactory.evict(broker, total);
+  public void finish() {
+    synchronized (current) {
+      messageTemplate.convertAndSend(getFinishDestination(), "FINISH");
+      progressbarFactory.evict(broker, total);
+    }
   }
 
   private String getProgressDestination() {
