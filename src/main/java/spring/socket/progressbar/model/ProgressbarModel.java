@@ -1,7 +1,6 @@
 package spring.socket.progressbar.model;
 
 import org.springframework.messaging.core.MessageSendingOperations;
-import spring.socket.progressbar.ProgressbarBroker;
 import spring.socket.progressbar.ProgressbarFactory;
 
 /**
@@ -55,10 +54,24 @@ public class ProgressbarModel implements Progressbar {
   }
 
   private String getProgressDestination() {
-    return "/queue/" + broker.getBrokerDestination() + "/progress";
+    String destination = broker.getBrokerDestination();
+    if (destination.startsWith("/")) {
+      destination = destination.substring(1, destination.length());
+    }
+    if (destination.endsWith("/")) {
+      destination = destination.substring(destination.length() - 1, destination.length());
+    }
+    return "/queue/" + destination + "/progress";
   }
 
   private String getFinishDestination() {
-    return "/queue/" + broker.getBrokerDestination() + "/finish";
+    String destination = broker.getBrokerDestination();
+    if (destination.startsWith("/")) {
+      destination = destination.substring(1, destination.length());
+    }
+    if (destination.endsWith("/")) {
+      destination = destination.substring(destination.length() - 1, destination.length());
+    }
+    return "/queue/" + destination + "/finish";
   }
 }

@@ -1,6 +1,7 @@
 package spring.socket.progressbar;
 
 import spring.socket.progressbar.model.Progressbar;
+import spring.socket.progressbar.model.ProgressbarBroker;
 
 /**
  * Created by hanwen on 16/3/11.

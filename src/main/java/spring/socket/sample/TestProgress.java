@@ -3,8 +3,8 @@ package spring.socket.sample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import spring.socket.progressbar.DefaultProgressbarBroker;
-import spring.socket.progressbar.ProgressbarBroker;
+import spring.socket.progressbar.model.DefaultProgressbarBroker;
+import spring.socket.progressbar.model.ProgressbarBroker;
 import spring.socket.progressbar.ProgressbarFactory;
 import spring.socket.progressbar.model.Progressbar;
 

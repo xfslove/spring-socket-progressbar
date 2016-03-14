@@ -1,4 +1,4 @@
-package spring.socket.progressbar;
+package spring.socket.progressbar.model;
 
 /**
  * progressbar的代理, 因为一个代理地址对应一个progressbar
