@@ -20,7 +20,7 @@ public class DefaultProgressbarBroker implements ProgressbarBroker {
 
   @Override
   public String getBrokerDestination() {
-    return module;
+    return "/module/" + module;
   }
 
 }

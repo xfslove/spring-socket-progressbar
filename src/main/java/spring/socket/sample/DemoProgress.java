@@ -1,33 +1,32 @@
 package spring.socket.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import spring.socket.progressbar.model.DefaultProgressbarBroker;
-import spring.socket.progressbar.model.ProgressbarBroker;
 import spring.socket.progressbar.ProgressbarFactory;
+import spring.socket.progressbar.model.DefaultProgressbarBroker;
 import spring.socket.progressbar.model.Progressbar;
+import spring.socket.progressbar.model.ProgressbarBroker;
 
 /**
  * Created by hanwen on 16/3/12.
  */
 @Component
-public class TestProgress {
+public class DemoProgress {
 
   @Autowired
   protected ProgressbarFactory progressbarFactory;
 
-  @Scheduled(fixedDelay = 1000 * 60 * 30)
-  public void testProgress() throws InterruptedException {
+  public void progress() throws Exception {
 
-    ProgressbarBroker identify = new DefaultProgressbarBroker("TEST");
+    ProgressbarBroker broker = new DefaultProgressbarBroker("DEMO");
 
-    Progressbar bar = progressbarFactory.get(identify, 100);
+    Progressbar bar = progressbarFactory.get(broker, 100);
 
+    // 一些执行时间长的代码
     bar.init();
 
     for (int i = 0; i < 100; i++) {
-      Thread.sleep(1000);
+      Thread.sleep(100);
       bar.increase();
     }
 

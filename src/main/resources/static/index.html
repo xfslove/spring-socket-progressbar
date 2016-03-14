@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ProgressTest</title>
+  <title>Progress Demo</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
   <script src="sockjs.js"></script>
   <script src="stomp.js"></script>
   <script src="progressbar.js"></script>
+
   <script type="text/javascript">
     function start() {
-      var progressbar = new Progressbar('TEST');
-      progressbar.init();
+      $(".progress-bar").Progressbar({
+        module: 'DEMO',
+        enableBtns: [{
+          dom: $("#majorComplete"),
+          clickCallback: function() {
+            $("#majorProgram").modal('hide');
+            $(".progress-bar").css('width', '0%');
+            $(".progress-bar").text('0/0');
+          }
+        }],
+        fetchData: {
+          url : '/demo'
+        }
+      });
     }
   </script>
 </head>
 <body>
-<div>
-  <div>
-    <button id="start" onclick="start();">Start</button>
-  </div>
+<h2>Progressbar Demo</h2>
+<br/>
+<button type="button" id="start" class="btn btn-default" onclick="start();">Start</button>
+</div>
+<br/>
+<div class="progress-bar" role="progressbar" style="width: 0%;line-height: 40px">
+  <span>0/0</span>
 </div>
 </body>
 </html>
