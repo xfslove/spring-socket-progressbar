@@ -11,11 +11,11 @@ import java.util.function.IntUnaryOperator;
  */
 public class ProgressbarModel implements Progressbar {
 
-  private final ProgressbarFactory progressbarFactory;
+  private final transient ProgressbarFactory progressbarFactory;
 
-  private final MessageSendingOperations messageTemplate;
+  private final transient MessageSendingOperations messageTemplate;
 
-  private final ProgressbarBroker broker;
+  private final transient ProgressbarBroker broker;
 
   private final int total;
 
